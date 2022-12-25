@@ -24,9 +24,7 @@ public class PlayerPanel extends JFrame  implements Runnable{
     Socket s;
     String name;
     PrintWriter pr;
-    ServerSocket listener;
 
-    ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
 
     public PlayerPanel(String name) {
         this.name = name;
@@ -122,23 +120,9 @@ public class PlayerPanel extends JFrame  implements Runnable{
         return root;
     }
 
+
     @Override
     public void run() {
-        try {
-            listener = new ServerSocket(Integer.parseInt(this.port.getText()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        while(true){
-            System.out.println("[SERVER] Waiting for players");
-            try {
-                Socket client = listener.accept();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("[SERVER] Connected to client");
 
-
-        }
     }
 }

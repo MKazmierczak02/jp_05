@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
 
-public class HostPanel extends JFrame{
+public class HostPanel extends JFrame implements Runnable{
 
     private JPanel root;
     private JPanel game;
@@ -30,6 +32,9 @@ public class HostPanel extends JFrame{
     InputStreamReader isr;
     BufferedReader br;
 
+    ServerSocket listener;
+
+    ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     public HostPanel() {
         $$$setupUI$$$();
         this.setContentPane(this.root);
@@ -130,5 +135,23 @@ public class HostPanel extends JFrame{
     public JComponent $$$getRootComponent$$$() {
         return root;
     }
+    @Override
+    public void run() {
+        try {
+            listener = new ServerSocket(Integer.parseInt(this.port.getText()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        while(true){
+            System.out.println("[SERVER] Waiting for players");
+            try {
+                Socket client = listener.accept();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("[SERVER] Connected to client");
 
+
+        }
+    }
 }
