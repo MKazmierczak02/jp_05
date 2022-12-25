@@ -4,10 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
-public class PlayerPanel extends JFrame {
+public class PlayerPanel extends JFrame  implements Runnable{
 
     private JPanel root;
     private JPanel game;
@@ -22,6 +24,9 @@ public class PlayerPanel extends JFrame {
     Socket s;
     String name;
     PrintWriter pr;
+    ServerSocket listener;
+
+    ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
 
     public PlayerPanel(String name) {
         this.name = name;
@@ -32,6 +37,7 @@ public class PlayerPanel extends JFrame {
         this.pack();
         this.setVisible(true);
         start_button.addActionListener(e -> {
+            this.run();
             address.setVisible(false);
             port.setVisible(false);
             ip_label.setVisible(false);
@@ -116,4 +122,23 @@ public class PlayerPanel extends JFrame {
         return root;
     }
 
+    @Override
+    public void run() {
+        try {
+            listener = new ServerSocket(Integer.parseInt(this.port.getText()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        while(true){
+            System.out.println("[SERVER] Waiting for players");
+            try {
+                Socket client = listener.accept();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("[SERVER] Connected to client");
+
+
+        }
+    }
 }
