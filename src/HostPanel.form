@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="HostPanel">
+  <grid id="27dc6" binding="root" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="788" height="624"/>
+    </constraints>
+    <properties>
+      <background color="-16736366"/>
+      <font name="Berlin Sans FB Demi" size="16"/>
+      <foreground color="-14278619"/>
+      <minimumSize width="788" height="624"/>
+      <preferredSize width="788" height="624"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="73dd5" binding="game" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="0" column="1" row-span="26" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <preferredSize width="400" height="400"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <component id="4930c" class="javax.swing.JButton" binding="start_button">
+        <constraints>
+          <grid row="25" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16746629"/>
+          <font name="Berlin Sans FB Demi" size="14"/>
+          <foreground color="-7221"/>
+          <text value="Start Gme"/>
+        </properties>
+      </component>
+      <component id="b126" class="javax.swing.JButton" binding="quit_button">
+        <constraints>
+          <grid row="26" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16746629"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="Stop Game"/>
+          <visible value="false"/>
+        </properties>
+      </component>
+      <component id="6a62d" class="javax.swing.JTextField" binding="width">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <alignmentX value="0.5"/>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="9"/>
+        </properties>
+      </component>
+      <component id="c977e" class="javax.swing.JTextField" binding="height">
+        <constraints>
+          <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="10"/>
+        </properties>
+      </component>
+      <component id="9d262" class="javax.swing.JTextField" binding="players">
+        <constraints>
+          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="2"/>
+        </properties>
+      </component>
+      <component id="75cda" class="javax.swing.JTextField" binding="balls">
+        <constraints>
+          <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="3"/>
+        </properties>
+      </component>
+      <component id="47734" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-6684630"/>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="WIDTH"/>
+        </properties>
+      </component>
+      <component id="b3fb5" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="HEIGHT"/>
+        </properties>
+      </component>
+      <component id="ba552" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <focusable value="true"/>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="MAX PLAYERS"/>
+        </properties>
+      </component>
+      <component id="a08f8" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="BALLS"/>
+        </properties>
+      </component>
+      <component id="f9885" class="javax.swing.JTextField" binding="port">
+        <constraints>
+          <grid row="17" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="8080"/>
+        </properties>
+      </component>
+      <component id="76b58" class="javax.swing.JLabel" binding="ip_label">
+        <constraints>
+          <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="     IP"/>
+        </properties>
+      </component>
+      <component id="7b0de" class="javax.swing.JLabel" binding="port_label">
+        <constraints>
+          <grid row="16" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="Berlin Sans FB Demi" size="18"/>
+          <foreground color="-7221"/>
+          <text value="  PORT"/>
+        </properties>
+      </component>
+      <component id="4fe51" class="javax.swing.JTextField" binding="address">
+        <constraints>
+          <grid row="13" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <background color="-16755866"/>
+          <caretColor color="-16755866"/>
+          <font name="Berlin Sans FB Demi" size="16"/>
+          <foreground color="-7221"/>
+          <text value="localhost"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
