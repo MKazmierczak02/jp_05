@@ -1,15 +1,19 @@
+import com.sun.source.tree.WhileLoopTree;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 
-public class PlayerPanel extends JFrame  implements Runnable{
+public class PlayerPanel extends JFrame {
 
     private JPanel root;
     private JPanel game;
@@ -20,14 +24,14 @@ public class PlayerPanel extends JFrame  implements Runnable{
     private JComboBox team_choser;
     private JLabel ip_label;
     private JLabel port_label;
+    private JTextField player_name;
     public PlayField play_field;
-    Socket s;
+    Socket socket;
     String name;
-    PrintWriter pr;
+    String team;
+    Player player;
 
-
-    public PlayerPanel(String name) {
-        this.name = name;
+    public PlayerPanel() {
         $$$setupUI$$$();
         this.setContentPane(this.root);
         this.setTitle("PLAYER");
@@ -35,18 +39,30 @@ public class PlayerPanel extends JFrame  implements Runnable{
         this.pack();
         this.setVisible(true);
         start_button.addActionListener(e -> {
-            this.run();
+            this.name=player_name.getText();
+            this.team = team_choser.getSelectedItem().toString();
             address.setVisible(false);
             port.setVisible(false);
             ip_label.setVisible(false);
             port_label.setVisible(false);
             quit_button.setVisible(true);
             start_button.setVisible(false);
-
+            try {
+                socket = new Socket(address.getText(),Integer.parseInt(port.getText()));
+                player = new Player(socket,name,team);
+                player.start();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         quit_button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    player.stop();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 address.setVisible(true);
                 port.setVisible(true);
                 ip_label.setVisible(true);
@@ -119,10 +135,8 @@ public class PlayerPanel extends JFrame  implements Runnable{
     public JComponent $$$getRootComponent$$$() {
         return root;
     }
-
-
-    @Override
-    public void run() {
-
+    public static void main(String[] args){
+        PlayerPanel playerPanel = new PlayerPanel();
     }
+
 }
