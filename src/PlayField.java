@@ -5,9 +5,11 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayField extends JPanel implements Runnable {
 
@@ -18,12 +20,16 @@ public class PlayField extends JPanel implements Runnable {
     int players_b;
     int balls;
 
+    JPanel game;
+    Thread t;
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
-
-    public PlayField(int width, int height, int players_a, int players_b, int balls){
+    public PlayField(int width, int height, int players_a, int players_b, int balls, JPanel game){
+        this.game = game;
         this.setLayout(new GridLayout(height,width,2,2));
         assignParameters(width, height,  players_a,  players_b,  balls);
         createBoard();
+        setBoard();
         this.setVisible(true);
     }
 
@@ -35,11 +41,10 @@ public class PlayField extends JPanel implements Runnable {
             for (int j=0; j<width; j++){
                 if (j==1 || j == width-2){
                     if(j==1){
-                        row.add(new Cell("player_left"));
+                        row.add(new Cell("blank"));
                     }else{
-                        row.add(new Cell("player_right"));
+                        row.add(new Cell("blank"));
                     }
-
                 }else if (j==width/2){
                     row.add(new Cell("middle"));
                 }else if (j==0 || j == width-1){
@@ -52,8 +57,7 @@ public class PlayField extends JPanel implements Runnable {
         }
     }
 
-    public String getAndSetBoardString(){
-        StringBuilder board_string= new StringBuilder();
+    public void setBoard(){
         for (int i=0;i<height; i++){
             for (int j=0; j<width; j++){
                 if (board.get(i).get(j).type=="counter"){
@@ -68,9 +72,16 @@ public class PlayField extends JPanel implements Runnable {
                     this.add(new JLabel(new ImageIcon(new ImageIcon("img.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
                 }
             }
-            board_string.append("\n");
         }
-        return String.valueOf(board_string);
+    }
+
+    public void start(){
+        t=new Thread(this);
+        t.start();
+    }
+
+    public void stop() throws IOException {
+        running.set(false);
     }
 
     private void assignParameters(int width, int height, int players_a, int players_b, int balls){
@@ -83,6 +94,14 @@ public class PlayField extends JPanel implements Runnable {
 
     @Override
     public void run() {
-
+        running.set(true);
+        while (running.get()){
+            System.out.println("playfield");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

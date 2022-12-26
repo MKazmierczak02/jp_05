@@ -25,7 +25,6 @@ public class HostPanel extends JFrame {
     private JLabel ip_label;
     private JLabel port_label;
     public PlayField play_field;
-    Thread t;
     ServerSocket listener;
     Host host;
 
@@ -36,29 +35,25 @@ public class HostPanel extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(true);
-        play_field = new PlayField(Integer.parseInt(width.getText()),Integer.parseInt(height.getText()),Integer.parseInt(players.getText()),Integer.parseInt(players.getText()),Integer.parseInt(balls.getText()));
-        game.add(play_field, BorderLayout.CENTER);
         start_button.addActionListener(e -> {
                 if (Integer.parseInt(width.getText())%2==0){
                     System.out.println("Liczba wierszy musi byc nieparzysta");
                 }else {
                     try {
                         listener = new ServerSocket(Integer.parseInt(port.getText()));
-                        host = new Host(listener);
+                        play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()), Integer.parseInt(players.getText()), Integer.parseInt(players.getText()), Integer.parseInt(balls.getText()), game);
+                        game.add(play_field, BorderLayout.CENTER);
+                        host = new Host(listener, Integer.parseInt(players.getText()), play_field, game);
                         host.start();
+                        address.setVisible(false);
+                        port.setVisible(false);
+                        ip_label.setVisible(false);
+                        port_label.setVisible(false);
+                        quit_button.setVisible(true);
+                        start_button.setVisible(false);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    game.remove(0);
-                    play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()), Integer.parseInt(players.getText()), Integer.parseInt(players.getText()), Integer.parseInt(balls.getText()));
-                    play_field.getAndSetBoardString();
-                    game.add(play_field, BorderLayout.CENTER);
-                    address.setVisible(false);
-                    port.setVisible(false);
-                    ip_label.setVisible(false);
-                    port_label.setVisible(false);
-                    quit_button.setVisible(true);
-                    start_button.setVisible(false);
                 }
         });
         quit_button.addActionListener(new ActionListener() {
@@ -66,6 +61,8 @@ public class HostPanel extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     host.stop();
+                    play_field.stop();
+                    listener.close();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

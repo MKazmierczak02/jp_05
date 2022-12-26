@@ -33,7 +33,7 @@
           <background color="-16746629"/>
           <font name="Berlin Sans FB Demi" size="14"/>
           <foreground color="-7221"/>
-          <text value="Start Gme"/>
+          <text value="Start Game"/>
         </properties>
       </component>
       <component id="b126" class="javax.swing.JButton" binding="quit_button">
