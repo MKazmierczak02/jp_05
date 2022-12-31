@@ -95,7 +95,6 @@ public class PlayField extends JPanel implements Runnable {
     public void run() {
         running.set(true);
         while (running.get()){
-            System.out.println();
             this.removeAll();
             this.setBoard();
             this.revalidate();

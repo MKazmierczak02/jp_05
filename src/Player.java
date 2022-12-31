@@ -43,15 +43,17 @@ public class Player implements Runnable{
         running.set(false);
     }
 
+    public void moveUp() throws IOException{
+        Cell temp = play_field.board.get(1).get(3);
+        play_field.board.get(1).set(3,new Cell("player_red"));
+        play_field.board.get(1).set(3,temp);
+    }
+
     @Override
     public void run() {
         running.set(true);
-        play_field.board.get(1).set(2, new Cell("player_red"));
         try {
             while(running.get()) {
-                Cell temp = play_field.board.get(1).get(3);
-                play_field.board.get(1).set(3,new Cell("player_red"));
-                play_field.board.get(1).set(3,temp);
                 String command = "get_playfield";
                 out.println(this.name+" "+this.team+" :" + command);
                 String serverResponse = input.readLine();

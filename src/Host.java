@@ -44,7 +44,6 @@ public class Host implements Runnable{
                     if(clients.size()<max_players) {
                         System.out.println("[SERVER] Waiting for players");
                         Socket client = listener.accept();
-                        play_field.board.get(1).get(1).type = "player_right";
                         System.out.println("[SERVER] Conneted to server");
                         PlayerHandler playerThread = new PlayerHandler(client);
                         clients.add(playerThread);
