@@ -40,21 +40,21 @@ public class HostPanel extends JFrame {
                     System.out.println("Liczba wierszy musi byc nieparzysta");
                 }else {
                     try {
+                        play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()), Integer.parseInt(players.getText()), Integer.parseInt(players.getText()), Integer.parseInt(balls.getText()));
                         listener = new ServerSocket(Integer.parseInt(port.getText()));
-                        play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()), Integer.parseInt(players.getText()), Integer.parseInt(players.getText()), Integer.parseInt(balls.getText()), game);
-                        game.add(play_field, BorderLayout.CENTER);
                         host = new Host(listener, Integer.parseInt(players.getText()), play_field, game);
-                        host.start();
-                        address.setVisible(false);
-                        port.setVisible(false);
-                        ip_label.setVisible(false);
-                        port_label.setVisible(false);
-                        quit_button.setVisible(true);
-                        start_button.setVisible(false);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
+            game.add(play_field, BorderLayout.CENTER);
+            host.start();
+            address.setVisible(false);
+            port.setVisible(false);
+            ip_label.setVisible(false);
+            port_label.setVisible(false);
+            quit_button.setVisible(true);
+            start_button.setVisible(false);
         });
         quit_button.addActionListener(new ActionListener() {
             @Override
@@ -66,6 +66,8 @@ public class HostPanel extends JFrame {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                game.removeAll();
+                play_field.removeAll();
                 address.setVisible(true);
                 port.setVisible(true);
                 ip_label.setVisible(true);

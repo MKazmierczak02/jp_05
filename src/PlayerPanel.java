@@ -1,4 +1,5 @@
 import com.sun.source.tree.WhileLoopTree;
+import models.Cell;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class PlayerPanel extends JFrame {
     private JLabel ip_label;
     private JLabel port_label;
     private JTextField player_name;
+    private JButton go_up;
+    private JButton go_down;
     public PlayField play_field;
     Socket socket;
     String name;
@@ -47,9 +50,12 @@ public class PlayerPanel extends JFrame {
             port_label.setVisible(false);
             quit_button.setVisible(true);
             start_button.setVisible(false);
+            go_up.setVisible(true);
+            go_down.setVisible(true);
             try {
                 socket = new Socket(address.getText(),Integer.parseInt(port.getText()));
-                player = new Player(socket,name,team);
+                player = new Player(socket,name,team, play_field);
+                game.add(play_field, BorderLayout.CENTER);
                 player.start();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -63,6 +69,9 @@ public class PlayerPanel extends JFrame {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                go_down.setVisible(false);
+                go_down.setVisible(false);
+                game.removeAll();
                 address.setVisible(true);
                 port.setVisible(true);
                 ip_label.setVisible(true);
@@ -138,5 +147,4 @@ public class PlayerPanel extends JFrame {
     public static void main(String[] args){
         PlayerPanel playerPanel = new PlayerPanel();
     }
-
 }

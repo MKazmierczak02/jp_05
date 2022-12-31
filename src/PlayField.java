@@ -24,8 +24,7 @@ public class PlayField extends JPanel implements Runnable {
     Thread t;
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    public PlayField(int width, int height, int players_a, int players_b, int balls, JPanel game){
-        this.game = game;
+    public PlayField(int width, int height, int players_a, int players_b, int balls){
         this.setLayout(new GridLayout(height,width,2,2));
         assignParameters(width, height,  players_a,  players_b,  balls);
         createBoard();
@@ -96,7 +95,11 @@ public class PlayField extends JPanel implements Runnable {
     public void run() {
         running.set(true);
         while (running.get()){
-            System.out.println("playfield");
+            System.out.println();
+            this.removeAll();
+            this.setBoard();
+            this.revalidate();
+            this.repaint();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
