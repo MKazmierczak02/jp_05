@@ -39,13 +39,12 @@ public class Host implements Runnable{
         running.set(true);
         play_field.start();
             while(running.get()){
-                System.out.println("host thread");
                 try {
                     if(clients.size()<max_players) {
                         System.out.println("[SERVER] Waiting for players");
                         Socket client = listener.accept();
                         System.out.println("[SERVER] Conneted to server");
-                        PlayerHandler playerThread = new PlayerHandler(client);
+                        PlayerHandler playerThread = new PlayerHandler(client, play_field);
                         clients.add(playerThread);
                         playerThread.start();
                         max_players++;
@@ -64,8 +63,5 @@ public class Host implements Runnable{
             }
             clients=new ArrayList<>();
             System.out.println("host stopped");
-
     }
-
-
 }

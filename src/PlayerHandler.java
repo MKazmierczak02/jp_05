@@ -8,11 +8,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PlayerHandler implements Runnable{
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Socket client;
-    private PrintWriter out;
-    private BufferedReader input;
+    public PrintWriter out;
+    public BufferedReader input;
     Thread t;
+    PlayField play_field;
 
-    public PlayerHandler(Socket clientSocket) throws IOException {
+    public PlayerHandler(Socket clientSocket, PlayField play_field) throws IOException {
+        this.play_field = play_field;
         this.client=clientSocket;
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         out = new PrintWriter(client.getOutputStream(), true);
@@ -30,16 +32,15 @@ public class PlayerHandler implements Runnable{
     @Override
     public void run() {
         running.set(true);
-        try {
             while (running.get()) {
-                String request = input.readLine();
-                System.out.println(request);
-                out.println(request);
+                out.println(this.play_field.boardToString());
+                try {
+                    String clientmess = input.readLine();
+                    System.out.println(clientmess);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             System.out.println("host stopped");
-        } catch (IOException e){
-
-        }
-
     }
 }

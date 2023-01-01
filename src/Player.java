@@ -1,14 +1,15 @@
 import models.Cell;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import javax.swing.*;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Player implements Runnable{
-
+    int x;
+    int y;
+    boolean started = false;
     Socket socket;
     String name;
     PrintWriter out;
@@ -18,10 +19,12 @@ public class Player implements Runnable{
     private Thread t;
     PlayField play_field;
     private final AtomicBoolean running = new AtomicBoolean(false);
+    JPanel game;
 
-    public Player(Socket socket, String name, String team, PlayField play_field){
+    public Player(Socket socket, String name, String team, PlayField play_field, JPanel game){
         this.name=name;
         this.team=team;
+        this.game = game;
         this.play_field=play_field;
         try {
             this.socket = socket;
@@ -39,14 +42,17 @@ public class Player implements Runnable{
     }
 
     public void stop() throws IOException {
+        started = true;
         socket.close();
+        play_field.stop();
         running.set(false);
     }
 
     public void moveUp() throws IOException{
-        Cell temp = play_field.board.get(1).get(3);
-        play_field.board.get(1).set(3,new Cell("player_red"));
-        play_field.board.get(1).set(3,temp);
+        out.println("moveUp");
+    }
+    public void moveDown() throws IOException{
+        out.println("moveDown");
     }
 
     @Override
@@ -54,12 +60,44 @@ public class Player implements Runnable{
         running.set(true);
         try {
             while(running.get()) {
-                String command = "get_playfield";
-                out.println(this.name+" "+this.team+" :" + command);
                 String serverResponse = input.readLine();
-                System.out.println("Server says: " + serverResponse);
+                makeBoard(serverResponse);
+                Thread.sleep(1000);
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private void makeBoard(String serverResponse) {
+        ArrayList<ArrayList<String>> board_in_str = new ArrayList<>();
+        String [] strings =  serverResponse.split("/");
+        ArrayList<String> stringList = new ArrayList<String>(Arrays.asList(strings));
+
+        for (String row : stringList){
+            String [] strings_2 =  row.split("X");
+            ArrayList<String> stringList_2 = new ArrayList<>(Arrays.asList(strings_2));
+            board_in_str.add(stringList_2);
+        }
+        ArrayList<ArrayList<Cell>> board = new ArrayList<>();
+
+        for (ArrayList<String> row_in_str : board_in_str){
+            ArrayList<Cell> row = new ArrayList<>();
+            for (String type : row_in_str){
+                row.add(new Cell(type));
+            }
+            board.add(row);
+        }
+
+        if (!started) {
+            play_field = new PlayField(board.get(0).size(), board.size());
+            play_field.board=board;
+            play_field.start();
+            game.add(play_field);
+            started = true;
+        }
+        play_field.board=board;
     }
 }

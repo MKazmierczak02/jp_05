@@ -40,7 +40,7 @@ public class HostPanel extends JFrame {
                     System.out.println("Liczba wierszy musi byc nieparzysta");
                 }else {
                     try {
-                        play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()), Integer.parseInt(players.getText()), Integer.parseInt(players.getText()), Integer.parseInt(balls.getText()));
+                        play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()));
                         listener = new ServerSocket(Integer.parseInt(port.getText()));
                         host = new Host(listener, Integer.parseInt(players.getText()), play_field, game);
                     } catch (IOException ex) {
