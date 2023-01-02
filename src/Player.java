@@ -4,17 +4,18 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Player implements Runnable{
     int x;
     int y;
+    int max_y;
     boolean started = false;
     Socket socket;
     String name;
     PrintWriter out;
     BufferedReader input;
-    BufferedReader keyboard;
     String team;
     private Thread t;
     PlayField play_field;
@@ -29,7 +30,6 @@ public class Player implements Runnable{
         try {
             this.socket = socket;
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            keyboard = new BufferedReader(new InputStreamReader(System.in));
             out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -49,10 +49,14 @@ public class Player implements Runnable{
     }
 
     public void moveUp() throws IOException{
-        out.println("moveUp");
+        if (y-1>=0) {
+            out.println("location:" + x + "," + (y--) + "," + x + "," + y + "," + team);
+        }
     }
     public void moveDown() throws IOException{
-        out.println("moveDown");
+        if (y+1<=max_y) {
+            out.println("location:" + x + "," + (y++) + "," + x + "," + y + "," + team);
+        }
     }
 
     @Override
@@ -62,7 +66,8 @@ public class Player implements Runnable{
             while(running.get()) {
                 String serverResponse = input.readLine();
                 makeBoard(serverResponse);
-                Thread.sleep(1000);
+                Thread.sleep(20);
+                out.println("location:" + x + "," + y + "," + x + "," + y + "," + team);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -71,10 +76,10 @@ public class Player implements Runnable{
         }
     }
 
-    private void makeBoard(String serverResponse) {
+    private void makeBoard(String serverResponse) throws IOException {
         ArrayList<ArrayList<String>> board_in_str = new ArrayList<>();
         String [] strings =  serverResponse.split("/");
-        ArrayList<String> stringList = new ArrayList<String>(Arrays.asList(strings));
+        ArrayList<String> stringList = new ArrayList<>(Arrays.asList(strings));
 
         for (String row : stringList){
             String [] strings_2 =  row.split("X");
@@ -92,6 +97,16 @@ public class Player implements Runnable{
         }
 
         if (!started) {
+            Random rand = new Random();
+            max_y=board.size()-1;
+            y = rand.nextInt(board.size()-1);
+            if(team.equals("LEFT")){
+                this.x=1;
+            } else{
+                this.x=board.get(0).size()-2;
+            }
+            board.get(y).get(x).type="player_"+team.toLowerCase();
+            System.out.println(x + " " + y);
             play_field = new PlayField(board.get(0).size(), board.size());
             play_field.board=board;
             play_field.start();

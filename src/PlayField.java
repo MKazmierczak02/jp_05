@@ -1,23 +1,21 @@
 import models.Cell;
-
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayField extends JPanel implements Runnable, Serializable {
     ArrayList<ArrayList<Cell>> board;
     int width;
     int height;
-    JPanel game;
     Thread t;
+    int[] left_scores = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int[] right_scores = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    ArrayList <Ball> balls;
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     public PlayField(int width, int height){
@@ -41,7 +39,7 @@ public class PlayField extends JPanel implements Runnable, Serializable {
                         row.add(new Cell("blank"));
                     }
                 }else if (j==width/2){
-                    row.add(new Cell("middle"));
+                    row.add(new Cell("blank"));
                 }else if (j==0 || j == width-1){
                     row.add(new Cell("counter"));
                 }else{
@@ -55,19 +53,19 @@ public class PlayField extends JPanel implements Runnable, Serializable {
     synchronized void setBoard(){
         for (int i=0;i<height; i++){
             for (int j=0; j<width; j++){
-                if (board.get(i).get(j).type=="counter"){
-                    System.out.println(board.get(i).get(j).type+"  "+(board.get(i).get(j).type=="counter"));
-                    this.add(new JButton(String.valueOf(board.get(i).get(j).goals)));
-                } else if (board.get(i).get(j).type=="player_left"){
+                if (Objects.equals(board.get(i).get(j).type, "counter")){
+                    if (j==0){
+                        this.add(new JButton(String.valueOf(left_scores[i])));
+                    } else{
+                        this.add(new JButton(String.valueOf(right_scores[i])));
+                    }
+                } else if (Objects.equals(board.get(i).get(j).type, "player_left")){
                     this.add(new JLabel(new ImageIcon(new ImageIcon("player_blue.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
-                }else if (board.get(i).get(j).type=="player_right"){
+                }else if (Objects.equals(board.get(i).get(j).type, "player_right")){
                     this.add(new JLabel(new ImageIcon(new ImageIcon("player_red.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
-                }else if (board.get(i).get(j).type=="middle"){
+                }else if (Objects.equals(board.get(i).get(j).type, "ball")){
                     this.add(new JLabel(new ImageIcon(new ImageIcon("ball.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
-                }else if (board.get(i).get(j).type=="blank"){
-                    this.add(new JLabel(new ImageIcon(new ImageIcon("img.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
-                } else{
-                    System.out.println(board.get(i).get(j).type+"!=counter"+(board.get(i).get(j).type=="counter"));
+                }else if (Objects.equals(board.get(i).get(j).type, "blank")){
                     this.add(new JLabel(new ImageIcon(new ImageIcon("img.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT))));
                 }
             }
@@ -105,6 +103,9 @@ public class PlayField extends JPanel implements Runnable, Serializable {
     public void run() {
         running.set(true);
         while (running.get()){
+            for(Ball ball : balls){
+                ball.move(false);
+            }
             this.removeAll();
             this.setBoard();
             this.revalidate();

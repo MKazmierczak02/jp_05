@@ -1,13 +1,8 @@
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Host implements Runnable{
@@ -15,7 +10,7 @@ public class Host implements Runnable{
     private Thread t;
     private final AtomicBoolean running = new AtomicBoolean(false);
     int max_players;
-    ArrayList<PlayerHandler> clients = new ArrayList<>();
+    ArrayList<PlayFieldHandler> clients = new ArrayList<>();
     PlayField play_field;
     JPanel game;
     public Host(ServerSocket listener, int max_players, PlayField playField, JPanel game) throws IOException {
@@ -44,7 +39,7 @@ public class Host implements Runnable{
                         System.out.println("[SERVER] Waiting for players");
                         Socket client = listener.accept();
                         System.out.println("[SERVER] Conneted to server");
-                        PlayerHandler playerThread = new PlayerHandler(client, play_field);
+                        PlayFieldHandler playerThread = new PlayFieldHandler(client, play_field);
                         clients.add(playerThread);
                         playerThread.start();
                         max_players++;
@@ -54,7 +49,7 @@ public class Host implements Runnable{
                 } catch (IOException e) {
                 }
             }
-            for(PlayerHandler player : clients){
+            for(PlayFieldHandler player : clients){
                 try {
                     player.stop();
                 } catch (IOException e) {
