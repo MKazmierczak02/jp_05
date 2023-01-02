@@ -13,8 +13,10 @@ public class Host implements Runnable{
     ArrayList<PlayFieldHandler> clients = new ArrayList<>();
     PlayField play_field;
     JPanel game;
-    public Host(ServerSocket listener, int max_players, PlayField playField, JPanel game) throws IOException {
+    int max_balls;
+    public Host(ServerSocket listener, int max_players, PlayField playField, JPanel game, int max_balls) throws IOException {
         this.game = game;
+        this.max_balls=max_balls;
         this.play_field = playField;
         this.listener=listener;
         this.max_players = max_players;
@@ -39,12 +41,9 @@ public class Host implements Runnable{
                         System.out.println("[SERVER] Waiting for players");
                         Socket client = listener.accept();
                         System.out.println("[SERVER] Conneted to server");
-                        PlayFieldHandler playerThread = new PlayFieldHandler(client, play_field);
+                        PlayFieldHandler playerThread = new PlayFieldHandler(client, play_field, max_players, max_balls, clients);
                         clients.add(playerThread);
                         playerThread.start();
-                        max_players++;
-                    } else {
-                        System.out.println("Server is Full");
                     }
                 } catch (IOException e) {
                 }

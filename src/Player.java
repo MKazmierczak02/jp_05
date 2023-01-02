@@ -65,15 +65,26 @@ public class Player implements Runnable{
         try {
             while(running.get()) {
                 String serverResponse = input.readLine();
-                makeBoard(serverResponse);
+                if (serverResponse.contains("map:")){
+                    String[] map = serverResponse.split(":");
+                    makeBoard(map[1]);
+                }
+                else if (serverResponse.contains("left_scores:")){
+                    String[] map = serverResponse.split(":");
+                    play_field.left_scores[Integer.parseInt(map[1])]++;
+                }else if (serverResponse.contains("right_scores:")){
+                    String[] map = serverResponse.split(":");
+                    play_field.right_scores[Integer.parseInt(map[1])]++;
+                }
+
                 Thread.sleep(20);
                 out.println("location:" + x + "," + y + "," + x + "," + y + "," + team);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
+            out.println("quit:" + x + "," + y + "," + x + "," + y);
             throw new RuntimeException(e);
         }
+        out.println("quit:" + x + "," + y + "," + x + "," + y);
     }
 
     private void makeBoard(String serverResponse) throws IOException {
@@ -106,7 +117,6 @@ public class Player implements Runnable{
                 this.x=board.get(0).size()-2;
             }
             board.get(y).get(x).type="player_"+team.toLowerCase();
-            System.out.println(x + " " + y);
             play_field = new PlayField(board.get(0).size(), board.size());
             play_field.board=board;
             play_field.start();

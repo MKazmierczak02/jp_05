@@ -21,6 +21,7 @@ public class HostPanel extends JFrame {
     private JTextField address;
     private JLabel ip_label;
     private JLabel port_label;
+    private JButton add_ball;
     public PlayField play_field;
     ServerSocket listener;
     Host host;
@@ -39,7 +40,7 @@ public class HostPanel extends JFrame {
                     try {
                         play_field = new PlayField(Integer.parseInt(width.getText()), Integer.parseInt(height.getText()));
                         listener = new ServerSocket(Integer.parseInt(port.getText()));
-                        host = new Host(listener, Integer.parseInt(players.getText()), play_field, game);
+                        host = new Host(listener, Integer.parseInt(players.getText()), play_field, game, Integer.parseInt("2"));
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -52,6 +53,7 @@ public class HostPanel extends JFrame {
             port_label.setVisible(false);
             quit_button.setVisible(true);
             start_button.setVisible(false);
+            add_ball.setVisible(true);
         });
         quit_button.addActionListener(new ActionListener() {
             @Override
@@ -63,6 +65,7 @@ public class HostPanel extends JFrame {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                add_ball.setVisible(false);
                 game.removeAll();
                 play_field.removeAll();
                 address.setVisible(true);

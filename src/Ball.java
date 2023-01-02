@@ -1,8 +1,3 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 public class Ball implements Runnable{
     int x;
@@ -18,25 +13,20 @@ public class Ball implements Runnable{
         this.play_field=play_field;
     }
 
-    public void move(boolean change_direction){
-        if (change_direction){
-            direction = !direction;
-        }
+    public void move(){
         if (direction){
-
             x++;
         } else {
             x--;
         }
     }
-    public void moveRight(){
-        x++;
-    }
-    public void moveLeft(){
-        x--;
-    }
-    public void reset(){
-        x=starting_x;
+    public void reset(int x ){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        this.x=x;
     }
 
     public void start(){
@@ -47,7 +37,12 @@ public class Ball implements Runnable{
     public void run() {
         running.set(true);
             while(running.get()) {
-
+                this.move();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
     }
 }

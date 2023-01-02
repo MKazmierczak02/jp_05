@@ -14,8 +14,6 @@ public class PlayField extends JPanel implements Runnable, Serializable {
     Thread t;
     int[] left_scores = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     int[] right_scores = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-    ArrayList <Ball> balls;
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     public PlayField(int width, int height){
@@ -103,9 +101,6 @@ public class PlayField extends JPanel implements Runnable, Serializable {
     public void run() {
         running.set(true);
         while (running.get()){
-            for(Ball ball : balls){
-                ball.move(false);
-            }
             this.removeAll();
             this.setBoard();
             this.revalidate();
