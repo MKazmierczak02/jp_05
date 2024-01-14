@@ -1,4 +1,5 @@
 Program zrealizowany na zajęcia języki programowania na Politechnice Wrocławskiej
+
 serwer:
 
 - ustawianie planszy 
